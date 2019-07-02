@@ -8,10 +8,4 @@
     <ProjectReference Include="..\ForexQuotation.Data\ForexQuotation.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dtos\" />
-    <Folder Include="Implementatons\" />
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
 </Project>

@@ -1,4 +1,6 @@
 using ForexQuotation.Data;
+using ForexQuotation.Services.Implementatons;
+using ForexQuotation.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,6 +25,9 @@ namespace ForexQuotation
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ForexQuotationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ForexQuotationDBConnection")));
+            services.AddTransient(typeof(ICurrencyService), typeof(CurrencyService));
+            services.AddTransient(typeof(ICountryCallingCodeService), typeof(CountryCallingCodeService));
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
