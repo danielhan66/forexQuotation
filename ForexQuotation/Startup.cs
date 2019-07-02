@@ -1,6 +1,7 @@
 using ForexQuotation.Data;
 using ForexQuotation.Services.Implementatons;
 using ForexQuotation.Services.Interfaces;
+using ForexQuotation.Website.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -52,7 +53,9 @@ namespace ForexQuotation
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.ConfigureExceptionHandler();
+
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
