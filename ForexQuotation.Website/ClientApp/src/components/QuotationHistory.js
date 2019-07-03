@@ -3,20 +3,15 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import moment from 'moment';
 
-const QuotationHistory = props =>{
+export const QuotationHistory = props =>{
     // componentDidMount
     React.useEffect(() => {
       props.fetchQuotations();
     }, []);
 
-    React.useEffect(() => {
-      console.log("props.quotations....");
-      console.log(props.quotations);
-    }, []);
-
   return (
   <div>
-    <h1>Quote history</h1>
+    <header className="header"><h1>Quote history</h1></header>
     <table className='table table-striped'>
       <thead>
         <tr>
@@ -32,7 +27,7 @@ const QuotationHistory = props =>{
         </tr>
       </thead>
       <tbody>
-        {props.quotations? props.quotations.map(quotation =>
+        {props.quotations && Array.isArray(props.quotations) ? props.quotations.map(quotation =>
           <tr key={quotation.id}>
             <td>{quotation.id}</td>
             <td>{quotation.firstName}</td>

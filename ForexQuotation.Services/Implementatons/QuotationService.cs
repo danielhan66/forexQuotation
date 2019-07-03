@@ -101,6 +101,7 @@ namespace ForexQuotation.Services.Implementatons
                 ToCurrency = toCurrency,
                 Amount = quotationDto.Amount,
                 OFXCustomerRate = quotationDto.OFXCustomerRate,
+                OFXCustomerAmount = quotationDto.OFXCustomerAmount,
                 CreatedDate = DateTime.Now
             };
             await _dbContext.Quotations.AddAsync(quotation);

@@ -1,23 +1,75 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Formik } from 'formik';
-import ReactPhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/dist/style.css'
+import * as actions from '../actions';
+import ReactPhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/dist/style.css';
 
 const GetQuotation = props => {
+  const [state, setState] = useState({jobDone: true, redirect: false});
+
+  // componentDidMount
+  React.useEffect(() => {
+      props.fetchCurrencies();
+  }, []);
+
+  React.useEffect(() => {
+    if(state.jobDone === false && props.jobDone === true){
+      if(!state.redirect){
+        setState((prevState) => {
+          return {
+            ...prevState,
+            redirect: true
+          }
+        });
+      }
+    }
+
+    if(state.jobDone !== props.jobDone){
+      setState((prevState) => {
+        return {
+          ...prevState,
+          jobDone: props.jobDone
+        }
+      });
+    }
+  });
+
   return (
     <div>
+      {state.redirect && (<Redirect to='/quotation_result' />)}
     <header className="header"><h1>Quick Quote</h1></header>
-    <div class="card">
-    <div class="card-body">
+    <div className="card">
+    <div className="card-body">
     <Formik
-    initialValues={{'id': 0}}
+    initialValues={{'fromCurrencyCode': 'AUD', 'toCurrencyCode': 'USD', 'amount': 1000}}
     enableReinitialize={true}
     validate={values => {
       let errors = {};
+      if (!values.firstName || values.firstName.trim() === '') {
+        errors.firstName = 'Required';
+      }
+      if (!values.lastName || !values.firstName.trim() === '') {
+        errors.lastName = 'Required';
+      }
+
+      if (values.email && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = 'Invalid email address';
+      }
+
+      if(values.fromCurrencyCode === values.toCurrencyCode){
+        errors.toCurrencyCode = 'to currency should not be equal to from currency';
+      }
+
+      if(isNaN(values.amount) || values.amount <= 0){
+        errors.amount = 'Invalid amount';
+      }
+
       return errors;
     }}
     onSubmit={(values, { setSubmitting }) => {
+      props.createQuotation(values);
     }}
   >
     {({
@@ -28,14 +80,15 @@ const GetQuotation = props => {
       handleBlur,
       handleSubmit,
       isSubmitting,
+      setFieldValue,
       /* and other goodies */
     }) => (
       <form onSubmit={handleSubmit}>
-      <div class="container">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <div class="form-group required">
-            <label class="control-label" htmlFor="firstName">
+      <div className="container">
+        <div className="row">
+          <div className="col-12 col-md-6">
+            <div className="form-group required">
+            <label className="control-label" htmlFor="firstName">
               First Name
             </label>
             <input
@@ -49,12 +102,14 @@ const GetQuotation = props => {
                 errors.firstName && touched.firstName ? 'text-input error form-control' : 'text-input form-control'
               }
             />
-            {errors.firstName && touched.firstName && errors.firstName}
+             {errors.firstName && touched.firstName && (
+              <div className="input-feedback">{errors.firstName}</div>
+            )}
             </div>
           </div>
-          <div class="col-12 col-md-6">
-            <div class="form-group required">
-            <label class="control-label" htmlFor="firstName">
+          <div className="col-12 col-md-6">
+            <div className="form-group required">
+            <label className="control-label" htmlFor="firstName">
             Last Name
             </label>
             <input
@@ -68,11 +123,13 @@ const GetQuotation = props => {
               errors.lastName && touched.lastName ? 'text-input error form-control' : 'text-input form-control'
             }
             />
-            {errors.lastName && touched.lastName && errors.lastName}
+            {errors.lastName && touched.lastName && (
+              <div className="input-feedback">{errors.lastName}</div>
+            )}
             </div>
           </div>
         </div>
-        <div class="form-group">
+        <div className="form-group">
         <label htmlFor="email" style={{ display: 'block' }}>
             Email
         </label>
@@ -87,23 +144,27 @@ const GetQuotation = props => {
               errors.email && touched.email ? 'text-input error form-control' : 'text-input form-control'
             }
         />
-        {errors.email && touched.email && errors.email}
+        {errors.email && touched.email && (
+              <div className="input-feedback">{errors.email}</div>
+            )}
         </div>
         <div>
         <label htmlFor="phone" style={{ display: 'block' }}>
             Telephone / Mobile
         </label>
         <ReactPhoneInput
+          id="phone"
+          name="phone"
           defaultCountry="au"
-          value={'+610452188660'}
-          onChange={() => console.log('123')}
+          value={values.phone}
+          onChange={(value) => setFieldValue('phone', value)}
         />
         {errors.phone && touched.phone && errors.phone}
         </div>
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <div class="form-group required">
-            <label class="control-label" htmlFor="firstName">
+        <div className="row">
+          <div className="col-12 col-md-6">
+            <div className="form-group required">
+            <label className="control-label" htmlFor="firstName">
               From Currency
             </label>
             <select
@@ -112,16 +173,20 @@ const GetQuotation = props => {
               onChange={handleChange}
               onBlur={handleBlur}
               style={{ display: 'block' }}
-              class="form-control"
+              className="form-control"
             >
-              <option value="" label="Select a currency" />
+              {
+              props.currencies ? (
+                props.currencies.map(currency => (<option value={currency.code} label={currency.name} />))
+              ) : null
+              }
             </select>
             {errors.fromCurrencyCode && touched.fromCurrencyCode && errors.fromCurrencyCode}
             </div>
           </div>
-          <div class="col-12 col-md-6">
-            <div class="form-group required">
-            <label class="control-label" htmlFor="firstName">
+          <div className="col-12 col-md-6">
+            <div className="form-group required">
+            <label className="control-label" htmlFor="firstName">
             To Currency
             </label>
             <select
@@ -130,18 +195,24 @@ const GetQuotation = props => {
               onChange={handleChange}
               onBlur={handleBlur}
               style={{ display: 'block' }}
-              class="form-control"
+              className="form-control"
             >
-              <option value="" label="Select a currency" />
+              {
+              props.currencies ? (
+                props.currencies.map(currency => (<option value={currency.code} label={currency.name} />))
+              ) : null
+              }
             </select>
-            {errors.toCurrencyCode && touched.toCurrencyCode && errors.toCurrencyCode}
+            {errors.toCurrencyCode && touched.toCurrencyCode && (
+              <div className="input-feedback">{errors.toCurrencyCode}</div>
+            )}
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <div class="form-group required">
-            <label class="control-label" htmlFor="firstName">
+        <div className="row">
+          <div className="col-12 col-md-6">
+            <div className="form-group required">
+            <label className="control-label" htmlFor="firstName">
             Amount
             </label>
             <input
@@ -155,13 +226,15 @@ const GetQuotation = props => {
               errors.amount && touched.amount ? 'text-input error form-control' : 'text-input form-control'
             }
             />
-            {errors.amount && touched.amount && errors.amount}
+            {errors.amount && touched.amount && (
+              <div className="input-feedback">{errors.amount}</div>
+            )}
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-4 mx-auto">
-          <button type="submit" class="btn btn-primary" disabled={isSubmitting}>
+        <div className="row">
+          <div className="col-10 col-md-4 mx-auto">
+          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
           GET QUOTE
           </button>
           </div>
@@ -176,4 +249,17 @@ const GetQuotation = props => {
   )
 };
 
-export default connect()(GetQuotation);
+const mapStateToProps = state => ({
+  jobDone: state.quotations.jobDone,
+  currencies: state.currencies.currencies
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchCurrencies: () => dispatch(actions.fetchCurrencies()),
+  createQuotation: (quotation) => dispatch(actions.createQuotation(quotation))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GetQuotation);

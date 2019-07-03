@@ -5,7 +5,6 @@ import reducers from '../reducers'
 import rootSaga from '../sagas'
 
 export default function configureStore (history, initialState) {
-  console.log("configureStore..............");
   // create the saga middleware
   const sagaMiddleware = createSagaMiddleware();
 
@@ -21,15 +20,10 @@ export default function configureStore (history, initialState) {
     enhancers.push(window.devToolsExtension());
   }
 
-  console.log("enhancers......", enhancers);
-
   const rootReducer = combineReducers({
     ...reducers,
     routing: routerReducer
   });
-
-  console.log("reducer.....");
-  console.log(rootSaga);
 
   const store = createStore(
     rootReducer,

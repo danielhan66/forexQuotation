@@ -8,6 +8,7 @@ import QuotationResult from './components/QuotationResult';
 export default () => (
   <Layout>
     <Route exact path='/' component={GetQuotation} />
-    <Route path='/quotation_history' component={QuotationResult} />
+    <Route path='/quotation_result' component={QuotationResult} />
+    <Route path='/quotation_history' component={QuotationHistory} />
   </Layout>
 );
