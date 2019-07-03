@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForexQuotation.Services", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForexQuotation.Website.UnitTests", "ForexQuotation.Website.UnitTests\ForexQuotation.Website.UnitTests.csproj", "{4A575FB6-737A-42C3-81E4-74F011777C57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForexQuotation.Proxies", "ForexQuotation.Proxies\ForexQuotation.Proxies.csproj", "{BBBC44DB-628F-41F1-88B2-E432E3CD5E2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4A575FB6-737A-42C3-81E4-74F011777C57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A575FB6-737A-42C3-81E4-74F011777C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A575FB6-737A-42C3-81E4-74F011777C57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBBC44DB-628F-41F1-88B2-E432E3CD5E2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBBC44DB-628F-41F1-88B2-E432E3CD5E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBBC44DB-628F-41F1-88B2-E432E3CD5E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBBC44DB-628F-41F1-88B2-E432E3CD5E2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

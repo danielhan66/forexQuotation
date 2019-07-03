@@ -1,4 +1,5 @@
-﻿using ForexQuotation.Services.Dtos;
+﻿using ForexQuotation.Data.Model;
+using ForexQuotation.Services.Dtos;
 using ForexQuotation.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,11 @@ namespace ForexQuotation.Website.UnitTests
                         Name = "United States Dollar (USD)"
                     },
                 };
+        }
+
+        public Task<Currency> GetCurrencyByCode(string code)
+        {
+            throw new NotImplementedException();
         }
     }
 }

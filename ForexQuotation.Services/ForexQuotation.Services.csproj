@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ForexQuotation.Data\ForexQuotation.Data.csproj" />
+    <ProjectReference Include="..\ForexQuotation.Proxies\ForexQuotation.Proxies.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 using ForexQuotation.Data;
+using ForexQuotation.Proxies.OFX;
 using ForexQuotation.Services.Implementatons;
 using ForexQuotation.Services.Interfaces;
 using ForexQuotation.Website.Extensions;
@@ -28,7 +29,9 @@ namespace ForexQuotation
             services.AddDbContext<ForexQuotationDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ForexQuotationDBConnection")));
             services.AddTransient(typeof(ICurrencyService), typeof(CurrencyService));
             services.AddTransient(typeof(ICountryCallingCodeService), typeof(CountryCallingCodeService));
-
+            services.AddTransient(typeof(IQuotationService), typeof(QuotationService));
+            services.AddTransient(typeof(IOFXAPIProxy), typeof(OFXAPIProxy));
+            services.Configure<OFXAPISettings>(Configuration.GetSection("OFXAPISettings"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -91,6 +94,13 @@ namespace ForexQuotation
                 {
                     dbContext.Currencies.Add(new Data.Model.Currency { Code = "AUD", Name = "Australian Dollar (AUD)" });
                     dbContext.Currencies.Add(new Data.Model.Currency { Code = "USD", Name = "United States Dollar (USD)" });
+                }
+
+                var quotation = dbContext.Quotations.FirstOrDefaultAsync().Result;
+                if(quotation == null)
+                {
+                    dbContext.Quotations.Add(new Data.Model.Quotation { FirstName="Tom", LastName="Hanks", Email="tomh@yahoo.com.au", Phone="+61460606060", FromCurrency=new Data.Model.Currency { Code = "AUD"}, ToCurrency=new Data.Model.Currency { Code = "USD"}, Amount=10000, OFXCustomerRate=0.72M, OFXCustomerAmount=7200 });
+                    dbContext.Quotations.Add(new Data.Model.Quotation { FirstName = "Rowan", LastName = "Atkinson", Email = "rowana@yahoo.com.au", Phone = "+61460606060", FromCurrency = new Data.Model.Currency { Code = "AUD" }, ToCurrency = new Data.Model.Currency { Code = "USD" }, Amount = 20000, OFXCustomerRate = 0.73M, OFXCustomerAmount = 14600 });
                 }
 
                 dbContext.SaveChanges();
