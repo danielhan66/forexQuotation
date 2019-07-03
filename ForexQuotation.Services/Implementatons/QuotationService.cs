@@ -65,7 +65,8 @@ namespace ForexQuotation.Services.Implementatons
                 FromCurrencyCode = q.FromCurrency.Code,
                 ToCurrencyCode = q.ToCurrency.Code,
                 Amount = q.Amount,
-                OFXCustomerRate = q.OFXCustomerRate
+                OFXCustomerRate = q.OFXCustomerRate,
+                CreatedDate = q.CreatedDate
             }).ToListAsync();
         }
 
@@ -99,7 +100,8 @@ namespace ForexQuotation.Services.Implementatons
                 FromCurrency = fromCurrency,
                 ToCurrency = toCurrency,
                 Amount = quotationDto.Amount,
-                OFXCustomerRate = quotationDto.OFXCustomerRate
+                OFXCustomerRate = quotationDto.OFXCustomerRate,
+                CreatedDate = DateTime.Now
             };
             await _dbContext.Quotations.AddAsync(quotation);
 

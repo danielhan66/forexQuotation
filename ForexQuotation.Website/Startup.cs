@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace ForexQuotation
 {
@@ -99,8 +100,8 @@ namespace ForexQuotation
                 var quotation = dbContext.Quotations.FirstOrDefaultAsync().Result;
                 if(quotation == null)
                 {
-                    dbContext.Quotations.Add(new Data.Model.Quotation { FirstName="Tom", LastName="Hanks", Email="tomh@yahoo.com.au", Phone="+61460606060", FromCurrency=new Data.Model.Currency { Code = "AUD"}, ToCurrency=new Data.Model.Currency { Code = "USD"}, Amount=10000, OFXCustomerRate=0.72M, OFXCustomerAmount=7200 });
-                    dbContext.Quotations.Add(new Data.Model.Quotation { FirstName = "Rowan", LastName = "Atkinson", Email = "rowana@yahoo.com.au", Phone = "+61460606060", FromCurrency = new Data.Model.Currency { Code = "AUD" }, ToCurrency = new Data.Model.Currency { Code = "USD" }, Amount = 20000, OFXCustomerRate = 0.73M, OFXCustomerAmount = 14600 });
+                    dbContext.Quotations.Add(new Data.Model.Quotation { FirstName="Tom", LastName="Hanks", Email="tomh@yahoo.com.au", Phone="+61460606060", FromCurrency=new Data.Model.Currency { Code = "AUD"}, ToCurrency=new Data.Model.Currency { Code = "USD"}, Amount=10000, OFXCustomerRate=0.72M, OFXCustomerAmount=7200, CreatedDate=DateTime.Now });
+                    dbContext.Quotations.Add(new Data.Model.Quotation { FirstName = "Rowan", LastName = "Atkinson", Email = "rowana@yahoo.com.au", Phone = "+61460606060", FromCurrency = new Data.Model.Currency { Code = "AUD" }, ToCurrency = new Data.Model.Currency { Code = "USD" }, Amount = 20000, OFXCustomerRate = 0.73M, OFXCustomerAmount = 14600, CreatedDate = DateTime.Now });
                 }
 
                 dbContext.SaveChanges();

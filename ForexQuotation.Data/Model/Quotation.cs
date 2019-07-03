@@ -16,5 +16,6 @@ namespace ForexQuotation.Data.Model
         public Decimal Amount { get; set; }
         public Decimal OFXCustomerRate { get; set; }
         public Decimal OFXCustomerAmount { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

@@ -18,5 +18,6 @@ namespace ForexQuotation.Services.Dtos
         public Decimal OFXCustomerRate { get; set; }
         // The amount of ToCurrency
         public Decimal OFXCustomerAmount { get; set;}
+        public DateTime CreatedDate { get; set; }
     }
 }
