@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ForexQuotation\ForexQuotation.Website.csproj" />
+    <ProjectReference Include="..\ForexQuotation.Website\ForexQuotation.Website.csproj" />
   </ItemGroup>
 
 </Project>
